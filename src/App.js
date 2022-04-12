@@ -5,6 +5,8 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Home from './components/Home';
 import UserProfile from './components/UserProfile';
 import LogIn from './components/Login';
+import Credits from './components/Credits';
+import Debits from './components/Debits';
 
 class App extends Component {
   constructor() {  // Create and initialize state
@@ -39,6 +41,8 @@ class App extends Component {
           <Route exact path="/" render={HomeComponent}/>
           <Route exact path="/userProfile" render={UserProfileComponent}/>
           <Route exact path="/login" render={LogInComponent}/>
+          <Route exact path="/credits" render={Credits}/>
+          <Route exact path="/debits" render={Debits}/>
         </div>
       </Router>
     );
