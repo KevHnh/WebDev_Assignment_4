@@ -5,7 +5,7 @@ const Credits = () => {
     function FetchCredits() {
         const [creditData, setCreditData] = useState([{
             description: '',
-            amount: '',
+            amount: Number,
             date: '',
         }])
 
@@ -28,7 +28,6 @@ const Credits = () => {
                                 <div className='infoDiv'>{info.amount}</div>
                                 <div className='infoDiv'>{info.date.slice(0,10)}</div>
                             </div>
-                            <br></br>
                         </>
                     )
                 })}
@@ -52,7 +51,7 @@ const Credits = () => {
             this.state = {
                 listItems: [],
                 description: '',
-                amount: '',
+                amount: Number,
                 date: getDate(),
             }
 
@@ -77,33 +76,48 @@ const Credits = () => {
             event.preventDefault();
 
             this.setState({
-                listItems: [...this.state.listItems, this.state.description, this.state.amount, this.state.date]
+                listItems: [...this.state.listItems, {description: this.state.description, amount: this.state.amount, date: this.state.date}]
             })
 
             this.setState({
                 description:'',
-                amount:'',
+                amount:Number,
             })
         }
 
         render() {
+            console.log(this.state.listItems);
+
+            let creditSum = this.state.listItems.reduce(function(prev, current){
+                return prev + +current.amount
+            }, 0);
+
             return (
                 <div>
                     <form onSubmit={this.onSubmit}>
-                        <input type="text" placeholder="Description" name="description" onChange={this.changeDescription} value={this.state.description}/>
-                        <input type="number" placeholder="Amount" name="amount" onChange={this.changeAmount} value={this.state.amount}/>
+                        <input type="text" placeholder="Description" name="description" onChange={this.changeDescription} value={this.state.description} required />
+                        <input type="number" placeholder="Amount" name="amount" onChange={this.changeAmount} value={this.state.amount} required />
                         <button type="submit">Add Credit</button>
                     </form>
+                    <div>
+                        <div>Balance: {creditSum}</div>
+                    </div>
+                    <div>
+                        <FetchCredits/>
+                    </div>
                     <div className='newEntries'>
                         {
                             this.state.listItems.map((li,key) => 
                             <div {...{key}}>
-                                {li}
+                                <div>{li.description}</div>
+                                <div>{li.amount}</div>
+                                <div>{li.date}</div>
+                                <br></br>
                             </div>
                             )
                         }
-                        <br/>
                     </div>
+                    <br></br>
                 </div>
             )
         }
@@ -113,7 +127,6 @@ const Credits = () => {
     <div>
       <h1>Credits</h1>
       <AddCredits/>
-      <FetchCredits/>
     </div>
   )
 }
