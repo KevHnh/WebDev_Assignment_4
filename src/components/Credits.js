@@ -1,7 +1,7 @@
 // src/components/Credits.js
 import React, { useEffect, useState, Component } from 'react';
 
-const Credits = (props) => {
+const Credits = () => {
     function FetchCredits() {
         const [creditData, setCreditData] = useState([{
             description: '',
@@ -36,21 +36,10 @@ const Credits = (props) => {
         )
     }
 
-    function AddCredit(newEntry) {
-        console.log(newEntry);
-        return(
-            <div>
-                <div className='infoDiv'>{newEntry.description}</div>
-                <div className='infoDiv'>{newEntry.amount}</div>
-                <div className='infoDiv'>{newEntry.date}</div>
-            </div>
-        )
-    }
-
     function getDate() {
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); 
         var yyyy = today.getFullYear();
         
         today = yyyy + '-' + mm + '-' + dd;
@@ -61,9 +50,10 @@ const Credits = (props) => {
         constructor() {
             super();
             this.state = {
+                listItems: [],
                 description: '',
                 amount: '',
-                date: '',
+                date: getDate(),
             }
 
             this.changeDescription = this.changeDescription.bind(this);
@@ -86,13 +76,9 @@ const Credits = (props) => {
         onSubmit(event) {
             event.preventDefault();
 
-            const creditsInfo = {
-                description: this.state.description,
-                amount: this.state.amount,
-                date: getDate(),
-            }
-
-            AddCredit(creditsInfo);
+            this.setState({
+                listItems: [...this.state.listItems, this.state.description, this.state.amount, this.state.date]
+            })
 
             this.setState({
                 description:'',
@@ -108,6 +94,16 @@ const Credits = (props) => {
                         <input type="number" placeholder="Amount" name="amount" onChange={this.changeAmount} value={this.state.amount}/>
                         <button type="submit">Add Credit</button>
                     </form>
+                    <div className='newEntries'>
+                        {
+                            this.state.listItems.map((li,key) => 
+                            <div {...{key}}>
+                                {li}
+                            </div>
+                            )
+                        }
+                        <br/>
+                    </div>
                 </div>
             )
         }
@@ -118,7 +114,6 @@ const Credits = (props) => {
       <h1>Credits</h1>
       <AddCredits/>
       <FetchCredits/>
-      <AddCredit/>
     </div>
   )
 }
