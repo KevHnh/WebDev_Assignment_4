@@ -42,7 +42,7 @@ const Debits = () => {
 
                             <ul>
                                 <li className='infoDiv'>
-                                    { info.description + " " + info.amount + " " + info.date.slice(0,10)}
+                                    { info.description + ", " + info.amount + ", " + info.date.slice(0,10)}
                                 </li>
                             </ul>
                             
@@ -127,7 +127,7 @@ const Debits = () => {
                         
                             <ul>
                                 <li>
-                                    {li.description + " " + li.amount + " " + li.date}
+                                    {li.description + ", " + li.amount + ", " + li.date}
                                 </li>
                             </ul>
                             
