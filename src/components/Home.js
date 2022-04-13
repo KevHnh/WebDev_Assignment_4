@@ -4,11 +4,14 @@
 import React, {Component} from 'react';
 import AccountBalance from './AccountBalance';
 import {Link} from 'react-router-dom';
+import Header from './Header';
+import './Home.css'
 
 class Home extends Component {
   render() {
     return (
-      <div>
+      <div className="homeBody">
+        <Header/>
         <img src="https://picsum.photos/200/200" alt="bank"/>
         <h1>Bank of React</h1>
 
@@ -19,6 +22,7 @@ class Home extends Component {
         <Link to="/credits">Credits</Link>
         <br/>
         <Link to="/debits">Debits</Link>
+        <br/>
         
         <AccountBalance accountBalance={this.props.accountBalance}/>
       </div>

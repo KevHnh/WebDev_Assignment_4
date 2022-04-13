@@ -8,6 +8,7 @@ import LogIn from './components/Login';
 import Credits from './components/Credits';
 import Debits from './components/Debits';
 
+
 class App extends Component {
   constructor() {  // Create and initialize state
     super(); 
@@ -36,6 +37,7 @@ class App extends Component {
     const LogInComponent = () => (<LogIn user={this.state.currentUser} mockLogIn={this.mockLogIn} />)  // Pass props to "LogIn" component
 
     return (
+      
       <Router>
         <div>
           <Route exact path="/" render={HomeComponent}/>

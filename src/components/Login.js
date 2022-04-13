@@ -3,7 +3,8 @@
 
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-
+import Header from './Header'
+import './Login.css'
 class LogIn extends Component {
   constructor () {  // Create and initialize state
     super()
@@ -39,7 +40,8 @@ class LogIn extends Component {
     }
     // Render the login form
     return (
-      <div>
+      <div className="login_body">
+        <Header/>
         <h1>Login</h1>
 
         <form onSubmit={this.handleSubmit}>

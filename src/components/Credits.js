@@ -1,11 +1,16 @@
 // src/components/Credits.js
 import React, { useEffect, useState, Component } from 'react';
+import Header from './Header';
+import './Credits.css'
 
 const Credits = () => {
+
+    var total = 0;
+    
     function FetchCredits() {
         const [creditData, setCreditData] = useState([{
             description: '',
-            amount: '',
+            amount: Number,
             date: '',
         }])
 
@@ -17,18 +22,23 @@ const Credits = () => {
             }).then(jsonRes => setCreditData(jsonRes));
         }, [])
 
+        var num = 0;
+
 
         return(
             <div className='creditsContainer'>
                 {creditData.map((info) => {
+                    num += parseFloat(info.amount)
+                    total = num
                     return (
                         <>
                             <div className='creditsCard'>
-                                <div className='infoDiv'>{info.description}</div>
-                                <div className='infoDiv'>{info.amount}</div>
-                                <div className='infoDiv'>{info.date.slice(0,10)}</div>
+                                <ul>
+                                    <li className='infoDiv'>
+                                        { info.description + ", " + info.amount + ", " + info.date.slice(0,10)}
+                                    </li>
+                                </ul>
                             </div>
-                            <br></br>
                         </>
                     )
                 })}
@@ -52,7 +62,7 @@ const Credits = () => {
             this.state = {
                 listItems: [],
                 description: '',
-                amount: '',
+                amount: Number,
                 date: getDate(),
             }
 
@@ -77,43 +87,63 @@ const Credits = () => {
             event.preventDefault();
 
             this.setState({
-                listItems: [...this.state.listItems, this.state.description, this.state.amount, this.state.date]
+                listItems: [...this.state.listItems, {description: this.state.description, amount: this.state.amount, date: this.state.date}]
             })
 
             this.setState({
                 description:'',
-                amount:'',
+                amount:Number,
             })
         }
 
         render() {
+            console.log(this.state.listItems);
+
+            let creditSum = this.state.listItems.reduce(function(prev, current){
+                return prev + +current.amount
+            }, total);
+
             return (
                 <div>
-                    <form onSubmit={this.onSubmit}>
-                        <input type="text" placeholder="Description" name="description" onChange={this.changeDescription} value={this.state.description}/>
-                        <input type="number" placeholder="Amount" name="amount" onChange={this.changeAmount} value={this.state.amount}/>
-                        <button type="submit">Add Credit</button>
-                    </form>
+                    <div>
+                        <FetchCredits/>
+                    </div>
+   
                     <div className='newEntries'>
                         {
                             this.state.listItems.map((li,key) => 
                             <div {...{key}}>
-                                {li}
+                                <ul>
+                                    <li>
+                                        {li.description + ", " + li.amount + ", " + li.date}
+                                    </li>
+                                </ul>
                             </div>
                             )
                         }
-                        <br/>
                     </div>
+
+                    <form onSubmit={this.onSubmit}>
+                        <input type="text" placeholder="Description" name="description" onChange={this.changeDescription} value={this.state.description} required />
+                        <input type="number" placeholder="Amount" name="amount" onChange={this.changeAmount} value={this.state.amount} required />
+                        <button type="submit">Add Credit</button>
+                    </form>
+
+                    <div>
+                        <div>Total Credit: {creditSum}</div>
+                    </div>
+
+                    <br></br>
                 </div>
             )
         }
     }
 
   return (
-    <div>
+    <div className="credits_Body">
+        <Header/>
       <h1>Credits</h1>
       <AddCredits/>
-      <FetchCredits/>
     </div>
   )
 }

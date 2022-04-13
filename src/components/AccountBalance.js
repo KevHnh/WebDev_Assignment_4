@@ -2,6 +2,7 @@
 
 import React, {Component} from 'react';
 
+
 class AccountBalance extends Component {
   render() {
     return (
