@@ -1,11 +1,14 @@
 // src/components/Credits.js
 import React, { useEffect, useState, Component } from 'react';
+import "./Credits.css";
 
 const Credits = () => {
-    function FetchCredits() {
+    var initTotal = 0;
+
+    function GetTotal() {
         const [creditData, setCreditData] = useState([{
             description: '',
-            amount: Number,
+            amount: '',
             date: '',
         }])
 
@@ -17,16 +20,56 @@ const Credits = () => {
             }).then(jsonRes => setCreditData(jsonRes));
         }, [])
 
+        var num = 0;
+        var max = 0;
+
+        creditData.map((info) => {initTotal = creditData.reduce(function(prev, current) {
+                    return prev + +current.amount;
+                    }, num);
+
+                    if (initTotal > max) {
+                        max = initTotal;
+                    }
+
+                    return (
+                        <></>
+                    )
+                })
+        
+        return max;
+    }
+
+    function FetchCredits() {
+        const [creditData, setCreditData] = useState([{
+            description: '',
+            amount: '',
+            date: '',
+        }])
+
+        useEffect(() => {fetch('https://moj-api.herokuapp.com/credits')
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+            }).then(jsonRes => setCreditData(jsonRes));
+        }, [])
+
+        var num = 0;
 
         return(
             <div className='creditsContainer'>
                 {creditData.map((info) => {
+                    initTotal = creditData.reduce(function(prev, current) {
+                        return prev + +current.amount;
+                    }, num);
                     return (
                         <>
-                            <div className='creditsCard'>
-                                <div className='infoDiv'>{info.description}</div>
-                                <div className='infoDiv'>{info.amount}</div>
-                                <div className='infoDiv'>{info.date.slice(0,10)}</div>
+                            <div className='creditCardContainer'>
+                                <div className='creditsCard'>
+                                    <div className='infoDiv'>{info.description}</div>
+                                    <div className='infoDiv'>${info.amount}</div>
+                                    <div className='infoDiv'>{info.date.slice(0,10)}</div>
+                                </div>
                             </div>
                         </>
                     )
@@ -53,6 +96,9 @@ const Credits = () => {
                 description: '',
                 amount: Number,
                 date: getDate(),
+            }
+            this.sum = {
+                max: initTotal,
             }
 
             this.changeDescription = this.changeDescription.bind(this);
@@ -86,47 +132,48 @@ const Credits = () => {
         }
 
         render() {
-            console.log(this.state.listItems);
-
             let creditSum = this.state.listItems.reduce(function(prev, current){
                 return prev + +current.amount
-            }, 0);
+            }, initTotal);
 
             return (
-                <div>
-                    <form onSubmit={this.onSubmit}>
-                        <input type="text" placeholder="Description" name="description" onChange={this.changeDescription} value={this.state.description} required />
-                        <input type="number" placeholder="Amount" name="amount" onChange={this.changeAmount} value={this.state.amount} required />
-                        <button type="submit">Add Credit</button>
-                    </form>
-                    <div>
-                        <div>Balance: {creditSum}</div>
+                <div className='creditsMain'>
+                    <div className='creditsLeft'>
+                        <h1>Credits</h1>
+                        <form onSubmit={this.onSubmit} className="formContainer">
+                            <input  className="formBox" type="text" placeholder="Description" name="description" onChange={this.changeDescription} value={this.state.description} required />
+                            <input className="formBox" type="number" placeholder="Amount" name="amount" onChange={this.changeAmount} value={this.state.amount} required />
+                            <button className="submitBox" type="submit">Add Credit</button>
+                        </form>
+                        <div>
+                            <div className='formBox'>Balance: ${creditSum}</div>
+                        </div>
                     </div>
-                    <div>
-                        <FetchCredits/>
+                    <div className='creditsRight'>
+                            <FetchCredits/>
+                        </div>
+                        <div>
+                            {
+                                this.state.listItems.map((li,key) => 
+                                <div className="newEntryCardContainer">
+                                    <div {...{key}} className="newEntryCard">
+                                        <div className="infoDiv" >{li.description}</div>
+                                        <div className="infoDiv" >{li.amount}</div>
+                                        <div className="infoDiv" >{li.date}</div>
+                                    </div>
+                                </div>
+                                )
+                            }
+                        </div>
                     </div>
-                    <div className='newEntries'>
-                        {
-                            this.state.listItems.map((li,key) => 
-                            <div {...{key}}>
-                                <div>{li.description}</div>
-                                <div>{li.amount}</div>
-                                <div>{li.date}</div>
-                                <br></br>
-                            </div>
-                            )
-                        }
-                    </div>
-                    <br></br>
-                </div>
             )
         }
     }
 
   return (
     <div>
-      <h1>Credits</h1>
-      <AddCredits/>
+        <GetTotal/>
+        <AddCredits/>
     </div>
   )
 }
