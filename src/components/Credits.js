@@ -1,6 +1,7 @@
 // src/components/Credits.js
 import React, { useEffect, useState, Component } from 'react';
 import "./Credits.css";
+import Header from './Header';
 
 const Credits = () => {
     var initTotal = 0;
@@ -204,8 +205,13 @@ const Credits = () => {
     }
 
   return (
-    <div>
-        <AddCredits/>
+    <div className="creditsContainer">
+        <div className="nav">
+            <Header/>
+        </div>
+        <div className="creditsBody">
+            <AddCredits/>
+        </div>
     </div>
   )
 }

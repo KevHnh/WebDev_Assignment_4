@@ -1,29 +1,47 @@
-.creditsMain {
+.creditsContainer {
     width:100%;
-    height: 100%;
+    background-color: beige;
+}
+
+.creditsMain {
+    background: red;
+
+}
+
+.nav {
+    position: fixed;
+    width: 100%;
+}
+
+.creditsBody {
+    padding-top: 125px;
 }
 
 .creditsLeft {
     position: fixed;
-    width: 20%;
+    width: 40%;
     height: 100%;
     float:left;
     justify-content: center;
     align-items: center;
+    margin-top: 100px;
 }
 
 .creditsRight {
-    width: 80%;
+    width: 60%;
     float:right;
     display: flex;
     justify-content: center;
     display: flex;
     flex-direction: column;
+    border: 1px solid black;
 }
 
 .formContainer {
     display: flex;
     flex-direction: column;
+    padding-left: 150px;
+    padding-right: 150px;
 }
 
 .formBox {
@@ -32,10 +50,13 @@
 
 .submitBox {
     padding: 10px;
+    background-color: beige;
 }
 
 .submitBox:hover {
     cursor: pointer;
+    background-color: lightblue;
+
 }
 
 .creditsCardContainer {
@@ -50,6 +71,11 @@
     padding: 15px;
     padding-right: 1vw;
     margin: 15px;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.creditsCard:hover {
+    background-color: lightblue;
 }
 
 .infoDiv {
