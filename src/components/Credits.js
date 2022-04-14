@@ -136,6 +136,39 @@ const Credits = () => {
                 return prev + +current.amount
             }, initTotal);
 
+            if (creditSum === 0) {
+                return (
+                    <div className='creditsMain'>
+                        <div className='creditsLeft'>
+                            <h1>Credits</h1>
+                            <form onSubmit={this.onSubmit} className="formContainer">
+                                <input  className="formBox" type="text" placeholder="Description" name="description" onChange={this.changeDescription} value={this.state.description} required />
+                                <input className="formBox" type="number" placeholder="Amount" name="amount" onChange={this.changeAmount} value={this.state.amount} required />
+                                <button className="submitBox" type="submit">Add Credit</button>
+                            </form>
+                            <div>
+                                <div className='formBox'>Balance: $<GetTotal/></div>
+                            </div>
+                        </div>
+                        <div className='creditsRight'>
+                                <FetchCredits/>
+                            </div>
+                            <div>
+                                {
+                                    this.state.listItems.map((li,key) => 
+                                    <div className="newEntryCardContainer">
+                                        <div {...{key}} className="newEntryCard">
+                                            <div className="infoDiv" >{li.description}</div>
+                                            <div className="infoDiv" >{li.amount}</div>
+                                            <div className="infoDiv" >{li.date}</div>
+                                        </div>
+                                    </div>
+                                    )
+                                }
+                            </div>
+                        </div>
+                )
+            }
             return (
                 <div className='creditsMain'>
                     <div className='creditsLeft'>
@@ -172,7 +205,6 @@ const Credits = () => {
 
   return (
     <div>
-        <GetTotal/>
         <AddCredits/>
     </div>
   )
