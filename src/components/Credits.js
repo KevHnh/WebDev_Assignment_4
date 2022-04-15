@@ -185,19 +185,19 @@ const Credits = () => {
                     </div>
                     <div className='creditsRight'>
                             <FetchCredits/>
-                        </div>
-                        <div>
-                            {
-                                this.state.listItems.map((li,key) => 
-                                <div className="newEntryCardContainer">
-                                    <div {...{key}} className="newEntryCard">
-                                        <div className="infoDiv" >{li.description}</div>
-                                        <div className="infoDiv" >{li.amount}</div>
-                                        <div className="infoDiv" >{li.date}</div>
+                            <div>
+                                {
+                                    this.state.listItems.map((li,key) => 
+                                    <div className="newEntryCardContainer">
+                                        <div {...{key}} className="newEntryCard">
+                                            <div className="infoDiv" >{li.description}</div>
+                                            <div className="infoDiv" >${li.amount}</div>
+                                            <div className="infoDiv" >{li.date}</div>
+                                        </div>
                                     </div>
-                                </div>
-                                )
-                            }
+                                    )
+                                }
+                            </div>
                         </div>
                     </div>
             )
