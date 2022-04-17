@@ -5,6 +5,7 @@ import React, {Component} from 'react';
 import AccountBalance from './AccountBalance';
 import {Link} from 'react-router-dom';
 
+
 class Home extends Component {
   render() {
     return (
@@ -19,7 +20,7 @@ class Home extends Component {
         <Link to="/credits">Credits</Link>
         <br/>
         <Link to="/debits">Debits</Link>
-        
+        {console.log(this.props.accountBalance)}
         <AccountBalance accountBalance={this.props.accountBalance}/>
       </div>
     );

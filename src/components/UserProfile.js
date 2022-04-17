@@ -3,11 +3,12 @@
 
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-
+import Header from './Header';
 class UserProfile extends Component {
   render() {
     return (
         <div>
+          <Header/>
           <h1>User Profile</h1>
 
           <div>Username: {this.props.userName}</div>

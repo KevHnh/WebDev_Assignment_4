@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { useHistory } from 'react-router-dom';
 import './Header.css'
@@ -15,6 +16,7 @@ export default function Header() {
         <div className="Header">
 
             <div className="Header_left">
+            
                 <button onClick={() => redirectButton("/")} className="homeButton">Home</button>
             </div>
 
