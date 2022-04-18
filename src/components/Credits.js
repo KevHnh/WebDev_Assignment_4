@@ -25,7 +25,7 @@ const Credits = (props) => {
           }
     }
 
-    console.log(props)
+    //console.log(props)
     var tcred = props.credit
     var tdeb = props.debit
     
@@ -200,7 +200,7 @@ const Credits = (props) => {
             arr1 = getItem('user1')
             
             //setItem('user1',this.state.listItems)
-            console.log(arr1)
+            //console.log(arr1)
 
             //update the current credit sum
             let creditSum = this.state.listItems.reduce(function(prev, current){

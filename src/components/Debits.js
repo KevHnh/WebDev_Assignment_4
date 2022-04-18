@@ -26,7 +26,7 @@ const Debits = (props) => {
     }
     
     // var arr = []
-    console.log(props)
+    //console.log(props)
 
     var tcred = props.credit
     var tdeb = props.debit
@@ -209,7 +209,7 @@ const Debits = (props) => {
             arr1 = getItem('user')
 
             //setItem('user',this.state.listItems)
-            console.log(arr1)
+            //console.log(arr1)
 
             //update the current debit sum
             let debitSum = this.state.listItems.reduce(function(prev, current){

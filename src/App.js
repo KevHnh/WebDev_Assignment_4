@@ -11,11 +11,17 @@ import Debits from './components/Debits';
 
 const InitialApp = () => {
 
+  // get the inital debit and credit values from the json file
   var initalDebit= 0
   var initalCredit = 0
   GetInitialDebit()
   GetInitialCredit()
 
+  // when the user first starts the program remove everything in local storage
+  localStorage.removeItem("user1");
+  localStorage.removeItem("user");
+
+  // get the inital debit sum
   function GetInitialDebit() {
 
     const [debitData, setDebitData] = useState([{
@@ -52,6 +58,7 @@ const InitialApp = () => {
     return max;
   }
 
+  // get the inital credit sum
   function GetInitialCredit() {
         
     const [creditData, setCreditData] = useState([{
@@ -89,8 +96,8 @@ const InitialApp = () => {
     return max;
   }
 
-  console.log(initalDebit)
-  console.log(initalCredit)
+  //console.log(initalDebit)
+  //console.log(initalCredit)
 
 
 

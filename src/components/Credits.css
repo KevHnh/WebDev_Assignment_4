@@ -14,7 +14,7 @@
 }
 
 .creditsBody {
-    /*padding-top: 10px;*/
+    padding-top: 100px;
 }
 
 .creditsLeft {
@@ -115,8 +115,8 @@
 
 .creditHeader{
     top:0;
-    z-index: 1;
-    position:sticky;
+    width: 100%;
+    position:fixed;
     padding: 20px 10px;
     display: flex;
     justify-content: space-between;
@@ -135,7 +135,7 @@
     box-shadow: 0 0 5px 0 rgba(0,0,0,0.5)
 }
 
-.credithomeButton:hover{
+.credit_homeButton:hover{
     border:1px solid red;
     
 }
