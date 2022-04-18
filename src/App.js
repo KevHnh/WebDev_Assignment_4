@@ -7,38 +7,24 @@ import UserProfile from './components/UserProfile';
 import LogIn from './components/Login';
 import Credits from './components/Credits';
 import Debits from './components/Debits';
+import axios from 'axios';
 
 var items = []
-var totalDebit= 10
-
-function setDebit(){
-  totalDebit = 420
-}
-
-{/*function FetchDebit() {
-
-  const [debitData, setDebitData] = useState([])
-
-  useEffect(()=>{
-    fetchJson();
-  },[])
-  
-  fetchJson = async () => {
-    const data = await fetch('https://moj-api.herokuapp.com/debits')
-    debitData = await data.json()
-    setDebitData(debitData)
-    console.log(debitData)
-    var num = 0
-    items.map((item)=>{
-      num += parseFloat(item.amount)
-      totalDebit = num
+var initalDebit= 4210.77
+var initalCredit = 4726.65
+ 
+{/*
+axios.get('https://moj-api.herokuapp.com/debits')
+    .then(response => 
+        response.data.map((item)=>{
+        
+          items.push(item.amount)
+        
+        },[])
+      );
+      console.log(items[0])
       
-    })
-    console.log(totalDebit)
-  }
-  
-}*/}
-
+      */}
 
 
 class App extends Component {
@@ -46,8 +32,8 @@ class App extends Component {
     super(); 
     this.state = {
       accountBalance: 14568.27,
-      credit: 0,
-      debit: 0,
+      credit: initalCredit,
+      debit: initalDebit,
       currentUser: {
         userName: 'Joe Smith',
         memberSince: '07/23/96',
@@ -56,9 +42,15 @@ class App extends Component {
   }
 
 
-  mockDebitCredit = (logInInfo) => {
+  mockDebit = (logInInfo) => {
     //console.log(logInInfo)
     this.setState({debit: logInInfo})
+  }
+
+  mockCredit = (creditInfo) => {
+    //console.log(logInInfo)
+  
+    this.setState({credit: creditInfo})
   }
 
 
@@ -72,8 +64,9 @@ class App extends Component {
   // Create Routes and React elements to be rendered using React components
   render() {  
     
-    const DebitComponent = () => (<Debits credit={this.state.credit} debit={this.state.debit} mockDebitCredit={this.mockDebitCredit}/>);
-    const HomeComponent = () => (<Home accountBalance={this.state.debit}/>);
+    const DebitComponent = () => (<Debits credit={this.state.credit} debit={this.state.debit} mockDebit={this.mockDebit}/>);
+    const CreditComponent = () => (<Credits credit={this.state.credit} debit={this.state.debit} mockCredit={this.mockCredit}/>);
+    const HomeComponent = () => (<Home accountBalance={(this.state.credit - this.state.debit).toFixed(2)}/>);
     const UserProfileComponent = () => (
       <UserProfile userName={this.state.currentUser.userName} memberSince={this.state.currentUser.memberSince}  />
     );
@@ -82,11 +75,10 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <div>{setDebit}</div>
           <Route exact path="/" render={HomeComponent}/>
           <Route exact path="/userProfile" render={UserProfileComponent}/>
           <Route exact path="/login" render={LogInComponent}/>
-          <Route exact path="/credits" render={Credits}/>
+          <Route exact path="/credits" render={CreditComponent}/>
           <Route exact path="/debits" render={DebitComponent}/>
         </div>
       </Router>

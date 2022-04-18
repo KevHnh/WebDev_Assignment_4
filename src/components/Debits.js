@@ -1,19 +1,31 @@
 // src/components/Debits.js
 
 import React, { useEffect, useState, Component } from 'react';
+import { useHistory } from 'react-router-dom';
 import "./Debits.css";
 import Header from './Header';
 import AccountBalance from './AccountBalance';
 
 
 const Debits = (props) => {
+
+    const navigate = useHistory();
     var arrTotal = 0;
     var initTotal = 0;
+    GetTotal()
     var arr = getItem('user')
     var arr1 = []
-    //var arr = []
-    var x = GetTotal()
-    console.log(x)
+
+    if (arr !== null){
+        for (let i = 0; i < arr.length; i++) {
+            arrTotal += parseFloat(arr[i].amount)
+          }
+    }
+    
+
+   // var arr = []
+
+    
     console.log(props)
     var tcred = props.credit
     var tdeb = props.debit
@@ -99,6 +111,7 @@ const Debits = (props) => {
         )
     }
    
+    
 
     function setItem(key, item) {
         localStorage.setItem(key, JSON.stringify(item));
@@ -150,9 +163,8 @@ const Debits = (props) => {
         }
 
         onSubmit(event) {
-            event.preventDefault();
 
-            //props.mockDebitCredit(tdeb)
+            event.preventDefault();
 
             this.setState({
                 listItems: [...this.state.listItems, {description: this.state.description, amount: this.state.amount, date: this.state.date}]
@@ -162,16 +174,23 @@ const Debits = (props) => {
                 description:'',
                 amount:Number,
             })
- 
+
+
         }
 
+        debitUpdate(event, path){
+            event.preventDefault();
+            props.mockDebit(tdeb)
+            navigate.push(path) 
+        }
+
+        
+
+
         render() {
-            if (arr.length !== 0){
+
+            if (arr !== null){
                 setItem('user',arr.concat(this.state.listItems))
-                for (let i = 0; i < arr.length; i++) {
-                    arrTotal += parseFloat(arr[i].amount)
-                  }
-                console.log(arrTotal)
             }
             else{
                 setItem('user',this.state.listItems)
@@ -179,58 +198,35 @@ const Debits = (props) => {
             
             //setItem('user',this.state.listItems)
             
+            
             arr1 = getItem('user')
             console.log(arr1)
 
             let debitSum = this.state.listItems.reduce(function(prev, current){
                 return prev + +current.amount
             }, initTotal);
-            tdeb = debitSum
-
-            
-            
-            if (debitSum === 0) {
-                return (
-                    <div className='debitsMain'>
-                    {console.log("Shamim" + this.props.accountBalance)}
-                        <div className='debitsLeft'>
-                            <h1>Debits</h1>
-                            <form onSubmit={this.onSubmit} className="formContainer">
-                                <input  className="formBox" type="text" placeholder="Description" name="description" onChange={this.changeDescription} value={this.state.description} required />
-                                <input className="formBox" type="number" placeholder="Amount" name="amount" onChange={this.changeAmount} value={this.state.amount} required />
-                                <button className="submitBox" type="submit">Add Debit</button>
-                            </form>
-                            <div>
-                                <div className='formBox'>Debit: {x + arrTotal}</div>
-                            </div>
-
-                            <div>
-
-                              <AccountBalance accountBalance={(tcred - tdeb)}/>
-                            </div>
-                            
-                        </div>
-                        <div className='debitsRight'>
-                                <FetchDebits/>
-                            </div>
-                            <div>
-                                {
-                                    arr1.map((li,key) => 
-                                    <div className="newEntryCardContainer" key={key}>
-                                        <div {...{key}} className="newEntryCard">
-                                            <div className="infoDiv" >{li.description}</div>
-                                            <div className="infoDiv" >{li.amount}</div>
-                                            <div className="infoDiv" >{li.date}</div>
-                                        </div>
-                                    </div>
-                                    )
-                                }
-                            </div>
-                        </div>
-                )
-            } else{
+            tdeb = debitSum + arrTotal
+   
             return (
                 <div className='debitsMain'>
+
+                    <div className="debitHeader">
+                        <div className="debitHeader_left">
+                            <button onClick={(e) => {this.debitUpdate(e, '/')}} className="debit_homeButton">Home</button>
+                        </div>
+            
+                        <div className="debitHeader_right">
+                            <button onClick={(e) => {this.debitUpdate(e, "/userProfile")}} className="debit_linkButton">User Profile</button>
+            
+                            <button onClick={(e) => {this.debitUpdate(e, "/login")}} className="debit_linkButton">Login</button>
+            
+                            <button  onClick={(e) => {this.debitUpdate(e, "/credits")}} className="debit_linkButton">Credits</button>
+            
+                            <button  onClick={(e) => {this.debitUpdate(e, "/debits")}} className="debit_linkButton">Debits</button>
+                        </div>
+                    </div>
+
+
                     <div className='debitsLeft'>
                         <h1>Debits</h1>
                 
@@ -240,13 +236,18 @@ const Debits = (props) => {
                             <button className="submitBox" type="submit">Add Debit</button>
                         </form>
                         <div>
-                            <div className='formBox'>Debit: ${debitSum + arrTotal}</div>
+                            <div className='formBox'>Debit: ${(debitSum + arrTotal).toFixed(2)}</div>
 
                         </div>
                         <div>
                     
-                          <AccountBalance accountBalance={parseFloat(tcred - tdeb)}/>
+                          <AccountBalance accountBalance={(parseFloat(tcred - tdeb)).toFixed(2)}/>
+        
+                          
                         </div>
+                        
+                        
+                       
                     </div>
                     <div className='debitsRight'>
                             <FetchDebits/>
@@ -266,17 +267,17 @@ const Debits = (props) => {
                         </div>
                     </div>
             )
-                            }
+                            
         }
     }
 
   return (
     <div className="debitsContainer">
     
-        <div className="nav">
-            <Header/>
-            
-        </div>
+        {/*<div className='nav'>
+        <Header/>
+        </div>*/}
+
         <div className="debitsBody">
             <AddDebits/>
         </div>

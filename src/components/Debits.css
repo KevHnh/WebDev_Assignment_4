@@ -14,7 +14,7 @@
 }
 
 .debitsBody {
-    padding-top: 100px;
+    /*padding-top: 100px;*/
 }
 
 .debitsLeft {
@@ -111,4 +111,50 @@
 .newEntryCard:hover {
     background-color: #47626a;
     color: white;
+}
+
+.debitHeader{
+    top:0;
+    z-index: 1;
+    position:sticky;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    background-color:  #47626a;
+    align-items: center;
+    margin-bottom: 10px;
+    color: black;
+    
+}
+
+
+.debit_homeButton{
+    margin-right: 20px;
+    border: 1px solid white;
+    padding:25px;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.5)
+}
+
+.debit_homeButton:hover{
+    border:1px solid red;
+    
+}
+
+.debit_linkButton{
+    margin-right: 20px;
+    border: 1px solid white;
+    padding:25px;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.5)
+   
+}
+
+.debit_linkButton:hover{
+    border:1px solid red;
+    
+}
+
+.debitHeader_right{
+    display: flex;
+    margin-right: 10px;
+    justify-content: center;
 }
