@@ -8,10 +8,14 @@ import AccountBalance from './AccountBalance';
 
 
 const Credits = (props) => {
+
+    // global variables
     const navigate = useHistory();
     var arrTotal = 0;
     var initTotal = 0;
     GetTotal()
+    
+    // get the user addCredits from localStorage if there is any
     var arr = getItem('user1')
     var arr1 = []
 
@@ -20,17 +24,12 @@ const Credits = (props) => {
             arrTotal += parseFloat(arr[i].amount)
           }
     }
-    
 
-   // var arr = []
-
-    
     console.log(props)
     var tcred = props.credit
     var tdeb = props.debit
     
-
-    
+    // function used to get the inital sum from the json file
     function GetTotal() {
       
         const [creditData, setCreditData] = useState([{
@@ -68,6 +67,7 @@ const Credits = (props) => {
         return max;
     }
 
+    // function used to fetch the json file and display it 
     function FetchCredits() {
         const [creditData, setCreditData] = useState([{
             description: '',
@@ -85,8 +85,6 @@ const Credits = (props) => {
 
         var num = 0;
 
-        
-        
         return(
             <div className='creditsContainer'>
                 {creditData.map((info,pos) => {
@@ -112,15 +110,18 @@ const Credits = (props) => {
     }
    
 
+    // function used to add user addCredits to localStorage
     function setItem(key, item) {
         localStorage.setItem(key, JSON.stringify(item));
     }
 
+    // function used to retrieve user addCredits from localStorage
     function getItem(key) {
         const item = localStorage.getItem(key);
         return JSON.parse(item);
     }
 
+    // function that get the current date
     function getDate() {
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
@@ -131,6 +132,7 @@ const Credits = (props) => {
         return today;
     }
 
+    // AddCredits class
     class AddCredits extends Component {
         constructor() {
             super();
@@ -149,18 +151,21 @@ const Credits = (props) => {
             this.onSubmit = this.onSubmit.bind(this);
         }
 
+        // description setter
         changeDescription(event) {
             this.setState({
                 description:event.target.value
             })
         }
         
+        // amount setter
         changeAmount(event) {
             this.setState({
                 amount:event.target.value
             })
         }
 
+        // add userinput inside listItems when addCredits is clicked
         onSubmit(event) {
             event.preventDefault();
 
@@ -175,38 +180,40 @@ const Credits = (props) => {
 
         }
 
+        // route to a differnt page when header buttons are clicked. Also update credits in App.js
         creditUpdate(event,path){
             event.preventDefault();
             props.mockCredit(tcred)
-            
             navigate.push(path)
-            
         }
 
         render() {
+            // add the user inputs in localStorage so we can print them out when the page is refreshed
             if (arr !== null){
                 setItem('user1',arr.concat(this.state.listItems))
             }
             else{
                 setItem('user1',this.state.listItems)
             }
+
+            // get the local storage addCredits
             arr1 = getItem('user1')
             
             //setItem('user1',this.state.listItems)
-            
-            
             console.log(arr1)
 
+            //update the current credit sum
             let creditSum = this.state.listItems.reduce(function(prev, current){
                 return prev + +current.amount
             }, initTotal);
 
+            //update the total credit
             tcred = creditSum + arrTotal
             
    
             return (
                 <div className='creditsMain'>
-
+                    {/* route buttons */}
                      <div className="creditHeader">
                         <div className="creditHeader_left">
                             <button onClick={(e) => {this.creditUpdate(e, '/')}} className="credit_homeButton">Home</button>
@@ -223,6 +230,7 @@ const Credits = (props) => {
                         </div>
                     </div>
 
+                    {/* user input boxes and display total balance and current credit */}
                     <div className='creditsLeft'>
                         <h1>Credits</h1>
                 
@@ -238,6 +246,7 @@ const Credits = (props) => {
                         
                     </div>
 
+                    {/* display the user addCredits in list form */}
                     <div className='creditsRight'>
                             <FetchCredits/>
                             <div>

@@ -9,10 +9,13 @@ import AccountBalance from './AccountBalance';
 
 const Debits = (props) => {
 
+    // global variables
     const navigate = useHistory();
     var arrTotal = 0;
     var initTotal = 0;
     GetTotal()
+
+    // get the user addCredits from localStorage if there is any
     var arr = getItem('user')
     var arr1 = []
 
@@ -22,15 +25,13 @@ const Debits = (props) => {
           }
     }
     
-
-   // var arr = []
-
-    
+    // var arr = []
     console.log(props)
+
     var tcred = props.credit
     var tdeb = props.debit
 
-    
+    // function used to get the inital sum from the json file
     function GetTotal() {
       
         const [debitData, setDebitData] = useState([{
@@ -68,6 +69,7 @@ const Debits = (props) => {
         return max;
     }
 
+    // function used to fetch the json file and display it 
     function FetchDebits() {
         const [debitData, setDebitData] = useState([{
             description: '',
@@ -112,16 +114,18 @@ const Debits = (props) => {
     }
    
     
-
+    // function used to add user addCredits to localStorage
     function setItem(key, item) {
         localStorage.setItem(key, JSON.stringify(item));
     }
 
+    // function used to retrieve user addCredits from localStorage
     function getItem(key) {
         const item = localStorage.getItem(key);
         return JSON.parse(item);
     }
 
+    // function that get the current date
     function getDate() {
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
@@ -132,6 +136,7 @@ const Debits = (props) => {
         return today;
     }
 
+    // AddDebit class
     class AddDebits extends Component {
         constructor() {
             super();
@@ -150,18 +155,21 @@ const Debits = (props) => {
             this.onSubmit = this.onSubmit.bind(this);
         }
 
+         // description setter
         changeDescription(event) {
             this.setState({
                 description:event.target.value
             })
         }
         
+        // amount setter
         changeAmount(event) {
             this.setState({
                 amount:event.target.value
             })
         }
 
+        // add userinput inside listItems when addDebits is clicked
         onSubmit(event) {
 
             event.preventDefault();
@@ -175,9 +183,9 @@ const Debits = (props) => {
                 amount:Number,
             })
 
-
         }
 
+        // route to a differnt page when header buttons are clicked. Also update debits in App.js
         debitUpdate(event, path){
             event.preventDefault();
             props.mockDebit(tdeb)
@@ -189,6 +197,7 @@ const Debits = (props) => {
 
         render() {
 
+            // add the user inputs in localStorage so we can print them out when the page is refreshed
             if (arr !== null){
                 setItem('user',arr.concat(this.state.listItems))
             }
@@ -196,20 +205,23 @@ const Debits = (props) => {
                 setItem('user',this.state.listItems)
             }
             
-            //setItem('user',this.state.listItems)
-            
-            
+            // get the local storage addDebits
             arr1 = getItem('user')
+
+            //setItem('user',this.state.listItems)
             console.log(arr1)
 
+            //update the current debit sum
             let debitSum = this.state.listItems.reduce(function(prev, current){
                 return prev + +current.amount
             }, initTotal);
+
+            //update the total credit
             tdeb = debitSum + arrTotal
    
             return (
                 <div className='debitsMain'>
-
+                    {/* route buttons */}
                     <div className="debitHeader">
                         <div className="debitHeader_left">
                             <button onClick={(e) => {this.debitUpdate(e, '/')}} className="debit_homeButton">Home</button>
@@ -226,7 +238,7 @@ const Debits = (props) => {
                         </div>
                     </div>
 
-
+                    {/* user input boxes and display total balance and current debit */}
                     <div className='debitsLeft'>
                         <h1>Debits</h1>
                 
@@ -240,15 +252,11 @@ const Debits = (props) => {
 
                         </div>
                         <div>
-                    
                           <AccountBalance accountBalance={(parseFloat(tcred - tdeb)).toFixed(2)}/>
-        
-                          
                         </div>
-                        
-                        
-                       
                     </div>
+
+                    {/* display the user addDebits in list form */}
                     <div className='debitsRight'>
                             <FetchDebits/>
                             <div>

@@ -20,7 +20,7 @@ class Home extends Component {
         <Link to="/credits">Credits</Link>
         <br/>
         <Link to="/debits">Debits</Link>
-        {console.log(this.props.accountBalance)}
+        
         <AccountBalance accountBalance={this.props.accountBalance}/>
       </div>
     );
