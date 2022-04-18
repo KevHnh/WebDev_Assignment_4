@@ -1,22 +1,22 @@
-// src/components/Debits.js
+// src/components/Credits.js
 
 import React, { useEffect, useState, Component } from 'react';
 import { useHistory } from 'react-router-dom';
-import "./Debits.css";
+import "./Credits.css";
 import Header from './Header';
 import AccountBalance from './AccountBalance';
 
 
-const Debits = (props) => {
+const Credits = (props) => {
 
     // global variables
     const navigate = useHistory();
     var arrTotal = 0;
     var initTotal = 0;
     GetTotal()
-
+    
     // get the user addCredits from localStorage if there is any
-    var arr = getItem('user')
+    var arr = getItem('user1')
     var arr1 = []
 
     if (arr !== null){
@@ -24,35 +24,33 @@ const Debits = (props) => {
             arrTotal += parseFloat(arr[i].amount)
           }
     }
-    
-    // var arr = []
-    //console.log(props)
 
+    //console.log(props)
     var tcred = props.credit
     var tdeb = props.debit
-
+    
     // function used to get the inital sum from the json file
     function GetTotal() {
       
-        const [debitData, setDebitData] = useState([{
+        const [creditData, setCreditData] = useState([{
             description: '',
             amount: '',
             date: '',
         }])
 
-        useEffect(() => {fetch('https://moj-api.herokuapp.com/debits')
+        useEffect(() => {fetch('https://moj-api.herokuapp.com/credits')
             .then((response) => {
                 if (response.ok) {
                     return response.json();
                 }
-            }).then(jsonRes => setDebitData(jsonRes));
+            }).then(jsonRes => setCreditData(jsonRes));
         }, [])
         
 
         var num = 0;
         var max = 0;
 
-        debitData.map((info) => {initTotal = debitData.reduce(function(prev, current) {
+        creditData.map((info) => {initTotal = creditData.reduce(function(prev, current) {
                     return prev + +current.amount;
                     }, num);
 
@@ -70,35 +68,33 @@ const Debits = (props) => {
     }
 
     // function used to fetch the json file and display it 
-    function FetchDebits() {
-        const [debitData, setDebitData] = useState([{
+    function FetchCredits() {
+        const [creditData, setCreditData] = useState([{
             description: '',
             amount: '',
             date: '',
         }])
 
-        useEffect(() => {fetch('https://moj-api.herokuapp.com/debits')
+        useEffect(() => {fetch('https://moj-api.herokuapp.com/credits')
             .then((response) => {
                 if (response.ok) {
                     return response.json();
                 }
-            }).then(jsonRes => setDebitData(jsonRes));
+            }).then(jsonRes => setCreditData(jsonRes));
         }, [])
 
         var num = 0;
 
-        
-        
         return(
-            <div className='debitsContainer'>
-                {debitData.map((info,pos) => {
-                    initTotal = debitData.reduce(function(prev, current) {
+            <div className='creditsContainer'>
+                {creditData.map((info,pos) => {
+                    initTotal = creditData.reduce(function(prev, current) {
                         return prev + +current.amount;
                     }, num);
                     return (
                       
-                            <div className='debitCardContainer' key={pos}>
-                                <div className='debitsCard'>
+                            <div className='creditCardContainer' key={pos}>
+                                <div className='creditsCard'>
                                     
                                     <div className='infoDiv'>{info.description}</div>
                                     <div className='infoDiv'>${info.amount}</div>
@@ -113,7 +109,7 @@ const Debits = (props) => {
         )
     }
    
-    
+
     // function used to add user addCredits to localStorage
     function setItem(key, item) {
         localStorage.setItem(key, JSON.stringify(item));
@@ -136,8 +132,8 @@ const Debits = (props) => {
         return today;
     }
 
-    // AddDebit class
-    class AddDebits extends Component {
+    // AddCredits class
+    class AddCredits extends Component {
         constructor() {
             super();
             this.state = {
@@ -155,7 +151,7 @@ const Debits = (props) => {
             this.onSubmit = this.onSubmit.bind(this);
         }
 
-         // description setter
+        // description setter
         changeDescription(event) {
             this.setState({
                 description:event.target.value
@@ -169,9 +165,8 @@ const Debits = (props) => {
             })
         }
 
-        // add userinput inside listItems when addDebits is clicked
+        // add userinput inside listItems when addCredits is clicked
         onSubmit(event) {
-
             event.preventDefault();
 
             this.setState({
@@ -185,80 +180,75 @@ const Debits = (props) => {
 
         }
 
-        // route to a differnt page when header buttons are clicked. Also update debits in App.js
-        debitUpdate(event, path){
+        // route to a differnt page when header buttons are clicked. Also update credits in App.js
+        creditUpdate(event,path){
             event.preventDefault();
-            props.mockDebit(tdeb)
-            navigate.push(path) 
+            props.mockCredit(tcred)
+            navigate.push(path)
         }
 
-        
-
-
         render() {
-
             // add the user inputs in localStorage so we can print them out when the page is refreshed
             if (arr !== null){
-                setItem('user',arr.concat(this.state.listItems))
+                setItem('user1',arr.concat(this.state.listItems))
             }
             else{
-                setItem('user',this.state.listItems)
+                setItem('user1',this.state.listItems)
             }
-            
-            // get the local storage addDebits
-            arr1 = getItem('user')
 
-            //setItem('user',this.state.listItems)
+            // get the local storage addCredits
+            arr1 = getItem('user1')
+            
+            //setItem('user1',this.state.listItems)
             //console.log(arr1)
 
-            //update the current debit sum
-            let debitSum = this.state.listItems.reduce(function(prev, current){
+            //update the current credit sum
+            let creditSum = this.state.listItems.reduce(function(prev, current){
                 return prev + +current.amount
             }, initTotal);
 
             //update the total credit
-            tdeb = debitSum + arrTotal
+            tcred = creditSum + arrTotal
+            
    
             return (
-                <div className='debitsMain'>
+                <div className='creditsMain'>
                     {/* route buttons */}
-                    <div className="debitHeader">
-                        <div className="debitHeader_left">
-                            <button onClick={(e) => {this.debitUpdate(e, '/')}} className="debit_homeButton">Home</button>
+                     <div className="creditHeader">
+                        <div className="creditHeader_left">
+                            <button onClick={(e) => {this.creditUpdate(e, '/')}} className="credit_homeButton">Home</button>
                         </div>
             
-                        <div className="debitHeader_right">
-                            <button onClick={(e) => {this.debitUpdate(e, "/userProfile")}} className="debit_linkButton">User Profile</button>
+                        <div className="creditHeader_right">
+                            <button onClick={(e) => {this.creditUpdate(e, "/userProfile")}} className="credit_linkButton">User Profile</button>
             
-                            <button onClick={(e) => {this.debitUpdate(e, "/login")}} className="debit_linkButton">Login</button>
+                            <button onClick={(e) => {this.creditUpdate(e, "/login")}} className="credit_linkButton">Login</button>
             
-                            <button  onClick={(e) => {this.debitUpdate(e, "/credits")}} className="debit_linkButton">Credits</button>
+                            <button  onClick={(e) => {this.creditUpdate(e, "/credits")}} className="credit_linkButton">Credits</button>
             
-                            <button  onClick={(e) => {this.debitUpdate(e, "/debits")}} className="debit_linkButton">Debits</button>
+                            <button  onClick={(e) => {this.creditUpdate(e, "/debits")}} className="credit_linkButton">Debits</button>
                         </div>
                     </div>
 
-                    {/* user input boxes and display total balance and current debit */}
-                    <div className='debitsLeft'>
-                        <h1>Debits</h1>
+                    {/* user input boxes and display total balance and current credit */}
+                    <div className='creditsLeft'>
+                        <h1>Credits</h1>
                 
                         <form onSubmit={this.onSubmit} className="formContainer">
                             <input  className="formBox" type="text" placeholder="Description" name="description" onChange={this.changeDescription} value={this.state.description} required />
                             <input className="formBox" type="number" placeholder="Amount" name="amount" onChange={this.changeAmount} value={this.state.amount} required />
-                            <button className="submitBox" type="submit">Add Debit</button>
+                            <button className="submitBox" type="submit">Add Credits</button>
                         </form>
                         <div>
-                            <div className='formBox'>Debit: ${(debitSum + arrTotal).toFixed(2)}</div>
-
+                            <div className='formBox'>Credit: ${(creditSum + arrTotal).toFixed(2)}</div>
+                            <AccountBalance accountBalance={parseFloat(tcred - tdeb).toFixed(2)}/>
                         </div>
-                        <div>
-                          <AccountBalance accountBalance={(parseFloat(tcred - tdeb)).toFixed(2)}/>
-                        </div>
+                        
                     </div>
 
-                    {/* display the user addDebits in list form */}
-                    <div className='debitsRight'>
-                            <FetchDebits/>
+                    {/* display the user addCredits in list form */}
+                    <div className='creditsRight'>
+                            <FetchCredits/>
                             <div>
                                 {
                                     arr1.map((li,key) => 
@@ -280,14 +270,15 @@ const Debits = (props) => {
     }
 
   return (
-    <div className="debitsContainer">
+    <div className="creditsContainer">
     
-        {/*<div className='nav'>
-        <Header/>
+        {/*<div className="nav">
+            <Header/>
+            
         </div>*/}
 
-        <div className="debitsBody">
-            <AddDebits/>
+        <div className="creditsBody">
+            <AddCredits/>
         </div>
 
         
@@ -295,4 +286,4 @@ const Debits = (props) => {
   )
 }
 
-export default Debits;
+export default Credits;
